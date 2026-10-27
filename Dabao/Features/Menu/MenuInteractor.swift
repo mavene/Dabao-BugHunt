@@ -13,6 +13,14 @@ final class MenuInteractor: MenuInteractorInputProtocol {
     init(restaurant: Restaurant, cart: CartStore) {
         self.restaurant = restaurant
         self.cart = cart
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(cartDidChange),
+                                               name: CartStore.didChangeNotification,
+                                               object: cart)
+    }
+
+    @objc private func cartDidChange() {
+        output?.didUpdateCart(currentSummary())
     }
 
     func loadMenu() {
